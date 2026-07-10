@@ -22,15 +22,11 @@ func main() {
 	mux.HandleFunc("POST /auth/register", handlers.Register)
 	mux.HandleFunc("POST /auth/login", handlers.Login)
 
-	// Protected routes — wrapped with JWT middleware
-	protected := http.NewServeMux()
-	protected.HandleFunc("POST /tickets", handlers.CreateTicket)
-	protected.HandleFunc("GET /tickets", handlers.ListTickets)
-	protected.HandleFunc("GET /tickets/{id}", handlers.GetTicket)
-	protected.HandleFunc("PATCH /tickets/{id}/status", handlers.UpdateTicketStatus)
-
-	mux.Handle("/tickets", middleware.Auth(protected))
-	mux.Handle("/tickets/", middleware.Auth(protected))
+	// Protected routes — wrapped directly with JWT middleware
+	mux.Handle("POST /tickets", middleware.Auth(http.HandlerFunc(handlers.CreateTicket)))
+	mux.Handle("GET /tickets", middleware.Auth(http.HandlerFunc(handlers.ListTickets)))
+	mux.Handle("GET /tickets/{id}", middleware.Auth(http.HandlerFunc(handlers.GetTicket)))
+	mux.Handle("PATCH /tickets/{id}/status", middleware.Auth(http.HandlerFunc(handlers.UpdateTicketStatus)))
 
 	port := os.Getenv("PORT")
 	if port == "" {
