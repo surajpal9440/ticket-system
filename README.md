@@ -142,8 +142,8 @@ curl -X PATCH http://localhost:8080/tickets/<id>/status \
 
 ## Deployment URL
 
-> **Live URL:** _(add your deployed URL here)_
-> **Health Check:** _(add your deployed `/health` URL here)_
+> **Live URL:** https://ticket-system-yc79.onrender.com
+> **Health Check:** https://ticket-system-yc79.onrender.com/health
 
 ---
 
